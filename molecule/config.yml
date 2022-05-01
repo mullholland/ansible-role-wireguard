@@ -1,11 +1,4 @@
 ---
-molecule_exceptions:
-  - variation: "Debian9"
-    reason: "Only supported with unstable repos enabled"
-  - variation: "CentOS-Stream9"
-    reason: "Install Problems"
-  - variation: "Amazonlinux"
-    reason: "Install Problems"
 molecule_scenarios:
   - scenario: "default"
     ansible: ["previous", "current", "next"]
@@ -17,7 +10,6 @@ molecule_scenarios:
       - "ubuntu2204"
       - "centos7"
       - "centos-stream8"
-      - "ubi8"
       - "fedora34"
       - "fedora35"
       - "rockylinux8"
