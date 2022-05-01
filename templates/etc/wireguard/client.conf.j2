@@ -1,0 +1,22 @@
+[interface]
+Address = {{ wireguard_peer_config.address }}
+ListenPort = {{ wireguard_server_config.port }}
+PrivateKey = {{ wg_privatekey.content | b64decode | trim }}
+
+[Peer]
+# {{ wireguard_server }}
+PublicKey = {{ hostvars[wireguard_server].wg_publickey.content | b64decode | trim }}
+AllowedIPs = {{ wireguard_peer_config.client_allowedips }}
+{%    if wireguard_peer_additional_config is defined %}
+{%      for option in wireguard_peer_additional_config %}
+{{ option }}
+{%      endfor%}
+{%     endif %}
+Endpoint = {{ wireguard_server }}:{{ wireguard_server_config.port }}
+{%   if wireguard_presharedkeys %}
+{%     for psk in hostvars[wireguard_server].wg_presharedkey.results %}
+{%       if psk.item == inventory_hostname %}
+PresharedKey = {{ psk.content | b64decode | trim }}
+{%       endif %}
+{%     endfor%}
+{%   endif %}

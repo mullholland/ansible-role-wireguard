@@ -1,0 +1,9 @@
+---
+- name: CentOS 7 | Install wireguard packages
+  ansible.builtin.package:
+    name:
+      - "yum-plugin-elrepo"
+    state: present
+
+- name: Include RedHat/CentOS Steps
+  ansible.builtin.include_tasks: "install-RedHat.yml"

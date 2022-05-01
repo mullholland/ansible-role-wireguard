@@ -1,0 +1,5 @@
+---
+- name: Fedora | Install wireguard package
+  ansible.builtin.package:
+    name: "wireguard-tools"
+    state: present

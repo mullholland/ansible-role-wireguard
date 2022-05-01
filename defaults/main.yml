@@ -1,0 +1,51 @@
+---
+# Wireguard configuration folder
+wireguard_path: "/etc/wireguard"
+
+# Overwrite docker/containerd service handling
+wireguard_ignore_docker: false
+
+# Use PreSharedKeys?
+wireguard_presharedkeys: true
+
+# Just needed once for the Server
+# private/public keys will be used from play
+wireguard_server_config:
+  address: "10.0.0.1/24"  # Required
+  port: 51820             # Required
+  postup: "iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"              # Optional
+  postdown: "iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE"            # Optional
+
+# Additional Server config, will be pasted line-by-line
+# in the [Interface] block on the server
+wireguard_server_additional_config: []
+# wireguard_server_additional_config:
+#   - "FwMark = Example"
+#   - "Table = Sit"
+
+# Additional peers on the wireguard_server
+# whcih are not managed by this playbook
+wireguard_manual_peers: []
+# wireguard_manual_peers:
+#   - name: wireguard_custom_host
+#     config:
+#       - ' PublicKey = cf6QQ0ORMZoOnodCg7RfpisolmBGnLkFRQaZXZpBBFs='
+#       - 'AllowedIPs = 10.0.0.3/32'
+#   - name: wireguard_custom_host
+#     config:
+#       - ' PublicKey = cf6QQ0ORMZoOnodCg7RfpisolmBGnLkFRQaZXZpBBFs='
+#       - 'AllowedIPs = 10.0.0.4/32'
+
+# Needed for each client
+wireguard_peer_config:
+  address: "10.0.0.2/24"                # Required
+  server_allowedips: "10.0.0.2/32"      # Required
+  client_allowedips: "0.0.0.0/0, ::/0"  # Required
+  endpoint: "{{ wireguard_server }}"    # Optional
+
+# Additional peer config, will be pasted line-by-line
+# in the [peer] block on the peer
+wireguard_peer_additional_config: []
+# wireguard_peer_additional_config:
+#   - "PersistentKeepalive = 30"
+#   - "PresharedKey = Lg5BZHogOIfJ1tJFlMSEZysIfYLfjFU1lO1Kq1V2Ib4="

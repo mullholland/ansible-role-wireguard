@@ -1,0 +1,7 @@
+---
+- name: RedHat/CentOS | Install wireguard packages
+  ansible.builtin.package:
+    name:
+      - "kmod-wireguard"
+      - "wireguard-tools"
+    state: present

@@ -1,0 +1,6 @@
+---
+roles:
+  - src: mullholland.repository_epel
+  - src: mullholland.repository_elrepo
+  - src: mullholland.repository_debian_backports
+collections: []

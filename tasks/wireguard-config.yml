@@ -1,0 +1,36 @@
+---
+- name: Ensure wireguard_path exists as directory
+  ansible.builtin.file:
+    path: "{{ wireguard_path }}"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0750"
+
+- name: Check wireguard private key
+  ansible.builtin.stat:
+    path: "{{ wireguard_path }}/privatekey"
+  register: wg_stat_privatekey
+
+- name: Generate private key
+  ansible.builtin.shell: "umask 077; wg genkey > {{ wireguard_path }}/privatekey"
+  register: wireguard_private_key
+  when:
+    - not wg_stat_privatekey.stat.exists
+
+- name: Read wireguard private key
+  ansible.builtin.slurp:
+    src: "{{ wireguard_path }}/privatekey"
+  register: wg_privatekey
+
+- name: Generate public key
+  ansible.builtin.shell: "wg pubkey > {{ wireguard_path }}/publickey"
+  args:
+    stdin: "{{ wg_privatekey.content | b64decode | trim }}"
+  when:
+    - not wg_stat_privatekey.stat.exists
+
+- name: Read wireguard public key
+  ansible.builtin.slurp:
+    src: "{{ wireguard_path }}/publickey"
+  register: wg_publickey

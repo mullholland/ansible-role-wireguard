@@ -1,0 +1,49 @@
+[interface]
+Address = {{ wireguard_server_config.address }}
+PrivateKey = {{ wg_privatekey.content | b64decode | trim }}
+ListenPort = {{ wireguard_server_config.port }}
+
+{% if wireguard_server_config.postup and wireguard_server_config.postup != "" %}
+PostUp = {{ wireguard_server_config.postup }}
+{% endif %}
+{% if wireguard_server_config.postdown and wireguard_server_config.postdown != "" %}
+PostDown = {{ wireguard_server_config.postdown }}
+{% endif %}
+
+{% if wireguard_server_additional_config and wireguard_server_additional_config != "" %}
+{%   for option in wireguard_server_additional_config %}
+{{ option }}
+{%   endfor%}
+{% endif %}
+
+
+{% for peer in ansible_play_hosts %}
+{%   if peer != wireguard_server %}
+[Peer]
+# {{ peer }}
+PublicKey = {{ hostvars[peer].wg_publickey.content | b64decode | trim }}
+AllowedIPs = {{ hostvars[peer].wireguard_peer_config.server_allowedips }}
+{%    if hostvars[peer].wireguard_peer_additional_config is defined %}
+{%      for option in hostvars[peer].wireguard_peer_additional_config %}
+{{ option }}
+{%      endfor%}
+{%     endif %}
+{%   if wireguard_presharedkeys %}
+{%     for psk in wg_presharedkey.results %}
+{%       if psk.item == peer %}
+PresharedKey = {{ psk.content | b64decode | trim }}
+{%       endif %}
+{%     endfor%}
+{%   endif %}
+{%  endif %}
+{% endfor %}
+
+{% for peer in wireguard_manual_peers %}
+
+[Peer]
+# {{ peer }}
+{%   for config in peer.config%}
+{{ config }}
+{%   endfor %}
+
+{% endfor %}

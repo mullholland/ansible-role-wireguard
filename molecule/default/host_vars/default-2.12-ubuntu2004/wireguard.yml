@@ -1,0 +1,6 @@
+---
+wireguard_peer_config:
+  address: "10.0.0.2/24"                # Required
+  server_allowedips: "10.0.0.2/32"      # Required
+  client_allowedips: "0.0.0.0/0, ::/0"  # Required
+  endpoint: "{{ wireguard_server }}"    # Optional

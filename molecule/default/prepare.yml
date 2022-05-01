@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: mullholland.repository_epel
+    - role: mullholland.repository_elrepo
+    - role: mullholland.repository_debian_backports
+      when: ansible_distribution_major_version|int <= 10

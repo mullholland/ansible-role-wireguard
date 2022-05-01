@@ -1,0 +1,41 @@
+---
+- name: preflight
+  include_tasks: preflight.yml
+
+- name: Update APT package cache if not updated in last 5min
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 300
+  when: ansible_os_family == "Debian"
+
+- name: Include distribution specific variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+    - '{{ ansible_system }}.yml'
+    - 'default.yml'
+
+- name: Include distribution install steps
+  ansible.builtin.include_tasks: "{{ item }}"
+  with_first_found:
+    - 'install-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - 'install-{{ ansible_distribution }}.yml'
+    - 'install-{{ ansible_os_family }}.yml'
+    - 'install-{{ ansible_system }}.yml'
+
+- name: configure wireguard
+  ansible.builtin.include_tasks: wireguard-config.yml
+
+- name: configure server
+  ansible.builtin.include_tasks:
+    file: server.yml
+  when:
+    - inventory_hostname == wireguard_server
+
+- name: client
+  ansible.builtin.include_tasks:
+    file: client.yml
+  when:
+    - inventory_hostname != wireguard_server
