@@ -41,7 +41,7 @@ PresharedKey = {{ psk.content | b64decode | trim }}
 {% for peer in wireguard_manual_peers %}
 
 [Peer]
-# {{ peer }}
+# {{ peer.name }}
 {%   for config in peer.config%}
 {{ config }}
 {%   endfor %}
