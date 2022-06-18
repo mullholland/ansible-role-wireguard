@@ -10,7 +10,7 @@ molecule_scenarios:
       - "ubuntu2204"
       - "centos7"
       - "centos-stream8"
-      - "fedora34"
       - "fedora35"
+      - "fedora36"
       - "rockylinux8"
       - "almalinux8"
