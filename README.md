@@ -109,8 +109,8 @@ This role has been tested on these [container images](https://hub.docker.com/u/m
 -   [ubuntu2204](https://hub.docker.com/r/mullholland/docker-molecule-ubuntu2204)
 -   [centos7](https://hub.docker.com/r/mullholland/docker-molecule-centos7)
 -   [centos-stream8](https://hub.docker.com/r/mullholland/docker-molecule-centos-stream8)
--   [fedora34](https://hub.docker.com/r/mullholland/docker-molecule-fedora34)
 -   [fedora35](https://hub.docker.com/r/mullholland/docker-molecule-fedora35)
+-   [fedora36](https://hub.docker.com/r/mullholland/docker-molecule-fedora36)
 -   [rockylinux8](https://hub.docker.com/r/mullholland/docker-molecule-rockylinux8)
 -   [almalinux8](https://hub.docker.com/r/mullholland/docker-molecule-almalinux8)
 
