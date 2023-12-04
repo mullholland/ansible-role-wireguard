@@ -1,5 +1,5 @@
 ---
-- name: Debian | Install linux headers  (for Debian < 11)
+- name: install-Debian |  Install linux headers  (for Debian < 11)
   ansible.builtin.package:
     name:
       - "linux-headers-{{ wireguard_arch }}"
@@ -7,7 +7,7 @@
   when:
     - ansible_distribution_major_version|int < 11
 
-- name: Debian | Install Wireguard
+- name: install-Debian | Install Wireguard
   ansible.builtin.package:
     name:
       - "wireguard"

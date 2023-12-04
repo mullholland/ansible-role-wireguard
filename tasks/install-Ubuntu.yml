@@ -1,5 +1,5 @@
 ---
-- name: Ubuntu | Install wireguard package
+- name: install-Ubuntu | Install wireguard package
   ansible.builtin.package:
     name: "wireguard"
     state: present
