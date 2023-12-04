@@ -1,6 +1,7 @@
 ---
 - name: preflight
-  include_tasks: preflight.yml
+  ansible.builtin.include_tasks:
+    file: preflight.yml
 
 - name: Update APT package cache if not updated in last 5min
   ansible.builtin.apt:

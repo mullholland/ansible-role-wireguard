@@ -1,16 +1,16 @@
 ---
-- name: select server if wireguard_server is unset
+- name: preflight | select server if wireguard_server is unset
   ansible.builtin.set_fact:
     wireguard_server: "{{ inventory_hostname }}"
   run_once: true
   when:
     - wireguard_server is not defined
 
-- name: print wireguard_server
+- name: preflight | print wireguard_server
   ansible.builtin.debug:
     msg: "{{ wireguard_server }}"
 
-- name: Warning.
+- name: preflight | Warning.
   ansible.builtin.debug:
     msg: |
       Warning. Virtualizationtype docker/containerd detected.

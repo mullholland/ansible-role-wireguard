@@ -5,4 +5,4 @@
 repository:
   description: description
   homepage: https://mullholland.net
-  topics: , ansible, molecule, tox, playbook
+  topics: cloud, system, ansible, molecule, tox, playbook

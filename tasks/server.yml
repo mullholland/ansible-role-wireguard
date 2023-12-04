@@ -1,31 +1,31 @@
 ---
-- name: check for PreSharedKeys
+- name: server | check for PreSharedKeys
+  when:
+    - wireguard_presharedkeys | bool
   block:
-    - name: Get wireguard PreSharedKeys key
+    - name: server | Get wireguard PreSharedKeys key
       ansible.builtin.stat:
         path: "{{ wireguard_path }}/psk-{{ item }}"
       with_items:
         - "{{ ansible_play_hosts }}"
       register: wg_presharedkey
 
-    - name: generate PreSharedKeys for each client
+    - name: server | generate PreSharedKeys for each client
       ansible.builtin.shell: umask 077; wg genpsk > {{ wireguard_path }}/psk-{{ item.item }}
+      changed_when: false
       with_items:
         - "{{ wg_presharedkey.results }}"
       when:
         - not item.stat.exists
 
-    - name: Get wireguard private key
+    - name: server | Get wireguard private key
       ansible.builtin.slurp:
         src: "{{ wireguard_path }}/psk-{{ item }}"
       register: wg_presharedkey
       with_items:
         - "{{ ansible_play_hosts }}"
 
-  when:
-    - wireguard_presharedkeys | bool
-
-- name: generate wireguard server config
+- name: server | generate wireguard server config
   ansible.builtin.template:
     src: "etc/wireguard/server.conf.j2"
     dest: "/etc/wireguard/wireguard.conf"

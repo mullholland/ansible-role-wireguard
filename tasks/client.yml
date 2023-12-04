@@ -1,5 +1,5 @@
 ---
-- name: generate wireguard client config
+- name: client | generate wireguard client config
   ansible.builtin.template:
     src: "etc/wireguard/client.conf.j2"
     dest: "/etc/wireguard/wireguard.conf"
